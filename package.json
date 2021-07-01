@@ -7,7 +7,6 @@
     "axios": "^0.21.1",
     "csv": "^5.5.0",
     "dotenv": "^10.0.0",
-    "puppeteer": "^10.0.0",
     "twit": "^2.2.11"
   },
   "devDependencies": {},
