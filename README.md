@@ -1,9 +1,10 @@
 # Impfstatus Update Twitter Bot
 
-This is the code that runs the account [@impfupdate](https://twitter.com/impfupdate) on Twitter, tweeting German vaccination updates with an ASCII-art style loading bar, inspired by [@impf_progess](https://twitter.com/impf_progress). As a personal project I wanted to replicate [@impf_progress](https://twitter.com/impf_progress) which is originally written python, in JavaScript. Logic is partly the same and dependencies are
+This is the code that runs the account [@impfupdate](https://twitter.com/impfupdate) on Twitter, tweeting German vaccination updates with an ASCII-art style loading bar, inspired by [@impf_progess](https://twitter.com/impf_progress).\
+I wanted to replicate [@impf_progress](https://twitter.com/impf_progress) as a personal project which is originally written python, in JavaScript. Logic is partly the same and dependencies are
 often js counterparts to the python used ones.
 
->▓▓▓▓▓▓▓▓░░░░░░ 55,10% at least one dosis 
+>▓▓▓▓▓▓▓▓░░░░░░ 55,10% at least one dosis\
 >▓▓▓▓▓░░░░░░░░░ 37,30% fully vaccinated
 
 ## Script Setup
