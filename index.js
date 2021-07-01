@@ -30,37 +30,41 @@ async function getUrlData(url) {
 
 function createProgressBar(percentage) {
     const chars = 15
-    const filled = (percentage * chars)
+    const filled = (percentage * chars).toFixed(2)
     const empty = chars - filled
     const calculdatedPercentage = (percentage * 100).toFixed(2)
         .toString().replace('.', ',')
-    const progressBar = `${'█'.repeat(filled)}${'░'.repeat(empty)} ${calculdatedPercentage}%`
+    const progressBar = `${'▓'.repeat(filled)}${'░'.repeat(empty)} ${calculdatedPercentage}%`
     return progressBar
 }
 
 function createMessage(parsedData) {
     const firstBar = createProgressBar(parsedData?.['impf_quote_erst'])
     const secondBar = createProgressBar(parsedData?.['impf_quote_voll'])
-    const message = `${firstBar} at least one dosis\n${secondBar} fully vaccinated`
+    const message = `${firstBar} at least one dosis \n${secondBar} fully vaccinated`
     return message
 }
 
 function sendTweet(tweet) {
     T.post('statuses/update', { status: tweet}, 
         function(err){
-            console.log(err, 'error')
+            if (err) {
+                console.log(err, 'error')
+                return
+            }
+            console.log(tweet, 'tweeted')
         } 
     )
 }
 
 function checkIfShouldTweet(data) {
-    const configJSON = fs.readFileSync("./state.yml", "utf-8")
+    const configJSON = fs.readFileSync("/Users/hakizu/Documents/VSCode/TwitterBot/state.yml", "utf-8")
     const config = JSON.parse(configJSON)
     return data.date !== config.date
 }
 
 function saveState(data) {    
-    fs.writeFile("./state.yml", JSON.stringify(data), function(err) {
+    fs.writeFile("/Users/hakizu/Documents/VSCode/TwitterBot/state.yml", JSON.stringify(data), function(err) {
         if (err) throw err
     })
 }
@@ -71,8 +75,7 @@ async function runAll() {
         const shouldTweet = checkIfShouldTweet(data)
         if (shouldTweet) {
             const tweet = createMessage(data)
-            console.log(tweet, 'tweet')
-            sendTweet()
+            sendTweet(tweet)
         } else {
             console.log("Don't tweet")
         }
@@ -83,7 +86,7 @@ async function runAll() {
 }
 
 try {
-    setInterval(runAll, 1000*24)
+    runAll()
 }catch(e) {
     console.log(e, 'errored on try')
 }
