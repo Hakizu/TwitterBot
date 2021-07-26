@@ -1,8 +1,17 @@
-# Impfstatus Update Twitter Bot
+# 2.0 Impfupdate Twitter Bot
+This Twitter bot has been updated to version 2.0.
+Instead of using a local file to save previous data the bot checks the latest tweet on his timeline and compares it
+to the createdTweet to ensure it's always up to date.
+
+By not depending on a local file it enables the code to be deployed on [Pipedream](https://pipedream.com/).
+Pipedream is able to run the script remotely, checking several times a day to ensure it always tweets
+the newest Impfdashboard as soon as possible, even on weekends.
+
+
+## Impfupdate Twitter Bot
 
 This is the code that runs the account [@impfupdate](https://twitter.com/impfupdate) on Twitter, tweeting German vaccination updates with an ASCII-art style loading bar, inspired by [@impf_progess](https://twitter.com/impf_progress).\
-I wanted to replicate [@impf_progress](https://twitter.com/impf_progress) as a personal project which is originally written python, in JavaScript. Logic is partly the same and dependencies are
-often js counterparts to the python used ones.
+I wanted to replicate [@impf_progress](https://twitter.com/impf_progress) as a personal project which is originally written python, in JavaScript. Logic is partly the same and dependencies are often js counterparts to the python used ones.
 
 >▓▓▓▓▓▓▓▓░░░░░░ 55,10% at least one dosis\
 >▓▓▓▓▓░░░░░░░░░ 37,30% fully vaccinated
@@ -11,7 +20,6 @@ often js counterparts to the python used ones.
 
 - Create an app at the [Twitter Developer site](https://developer.twitter.com/) and create app tokens and keys
 - Set [Twit](https://www.npmjs.com/package/twit) config with consumer and access token/keys
-- Make sure [state.yml](./state.yml) is writable, this is where the last Tweet and its values are stored so to not Tweet repeated messages
 - Install the Twit, CSV and axios as dependencies
 
 ```
@@ -19,9 +27,7 @@ often js counterparts to the python used ones.
 npm init
 
 # Install dependencies
-npm i twit
-npm i csv-parser
-npm i axios
+npm i
 ```
 
 The script can now be called like this:
@@ -32,10 +38,9 @@ node index.js
 
 ## Crontab Setup
 
-Running a cronjob on mac
-
+New cronjob deployed on Pipedream
 ```
-0 12 * * * . $HOME/.zprofile; /usr/local/bin/node /users/hakizu/documents/vscode/twitterbot/index.js
+0 11-18 * * *
 ```
 
 ## Data Source
