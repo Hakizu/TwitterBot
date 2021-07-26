@@ -2,7 +2,6 @@ const parse = require('csv-parse/lib/sync')
 const axios = require("axios")
 const twit = require('twit')
 require('dotenv').config()
-const fs = require('fs')
 
 const T = new twit({
     consumer_key: process.env.apiKey,
@@ -46,40 +45,34 @@ function createMessage(parsedData) {
 }
 
 function sendTweet(tweet) {
-    T.post('statuses/update', { status: tweet}, 
-        function(err){
-            if (err) {
-                console.log(err, 'error')
-                return
-            }
-            console.log(tweet, 'tweeted')
-        } 
-    )
+    T.post('statuses/update', { status: tweet})
+        .then((response) => console.log(response.data.text, 'tweeted'))    
+        .catch((error) => console.log(error, 'error'))
 }
 
-function checkIfShouldTweet(data) {
-    const configJSON = fs.readFileSync("/Users/hakizu/Documents/VSCode/TwitterBot/state.yml", "utf-8")
-    const config = JSON.parse(configJSON)
-    return data.date !== config.date
+async function getLastTweet() {
+    const lastTweet = await T.get('statuses/user_timeline', { count: 1, user_id: '1405058861703311361'})
+        .catch((error) => console.log(error, 'error on getting tweet'))
+
+    return lastTweet.data[0]
 }
 
-function saveState(data) {    
-    fs.writeFile("/Users/hakizu/Documents/VSCode/TwitterBot/state.yml", JSON.stringify(data), function(err) {
-        if (err) throw err
-    })
+function checkIfShouldTweet(tweet, lastTweet) {
+    const lastText = lastTweet.text
+    return lastText !== tweet
 }
 
 async function runAll() {
     try {
         const data = await getUrlData(dashboardURL)
-        const shouldTweet = checkIfShouldTweet(data)
+        const lastTweet = await getLastTweet()
+        const tweet = createMessage(data)
+        const shouldTweet = checkIfShouldTweet(tweet, lastTweet)
         if (shouldTweet) {
-            const tweet = createMessage(data)
             sendTweet(tweet)
         } else {
             console.log("Don't tweet")
         }
-        saveState(data)
     } catch(e) {
         console.log(e,'error on runAll')
     }
@@ -87,6 +80,6 @@ async function runAll() {
 
 try {
     runAll()
-}catch(e) {
+} catch(e) {
     console.log(e, 'errored on try')
 }
