@@ -61,31 +61,34 @@ async function getLastTweet() {
     return lastTweet.data[0]
 }
 
-async function checkDifference(lastTweet) {
+async function getPreviousVacNumbers(lastTweet) {
     const splitText = lastTweet.text.split('\n')
     const vaccinationRates = splitText.map(it => {
         const index = it.indexOf('%')
         if (!index) {
             console.log('percentage not found ')
         }
-        return parseInt(it.slice(index - 4, index))
+        const slicedString = it.slice(index - 5, index)
+            .replace(',','.')
+        return Number(slicedString)
     })
     return vaccinationRates
 }
 
-function checkIfShouldTweet(tweet, lastTweet) {
-    const lastText = lastTweet.text
-    return lastText !== tweet
+function checkIfShouldTweet(data, difference) {
+    return !(data.impf_quote_erst*100 === difference[0] &&
+        data.impf_quote_voll*100 === difference[1])
 }
 
 async function runAll() {
     try {
         const data = await getUrlData(dashboardURL)
         const lastTweet = await getLastTweet()
-        const difference = await checkDifference(lastTweet)
-        const tweet = createMessage(data, difference)
-        const shouldTweet = checkIfShouldTweet(tweet, lastTweet)
+        const previousRates = await getPreviousVacNumbers(lastTweet)
+        const shouldTweet = checkIfShouldTweet(data, previousRates)
+
         if (shouldTweet) {
+            const tweet = createMessage(data, previousRates)
             await sendTweet(tweet)
         } else {
             console.log("Don't tweet")
