@@ -76,8 +76,8 @@ async function getPreviousVacNumbers(lastTweet) {
 }
 
 function checkIfShouldTweet(data, difference) {
-    return !(data.impf_quote_erst*100 === difference[0] &&
-        data.impf_quote_voll*100 === difference[1])
+    return (data.impf_quote_erst !== (difference[0]/100).toFixed(3) ||
+        data.impf_quote_voll !== (difference[1]/100).toFixed(3))
 }
 
 async function runAll() {
@@ -86,7 +86,6 @@ async function runAll() {
         const lastTweet = await getLastTweet()
         const previousRates = await getPreviousVacNumbers(lastTweet)
         const shouldTweet = checkIfShouldTweet(data, previousRates)
-
         if (shouldTweet) {
             const tweet = createMessage(data, previousRates)
             await sendTweet(tweet)
