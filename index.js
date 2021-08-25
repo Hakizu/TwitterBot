@@ -76,8 +76,8 @@ async function getPreviousVacNumbers(lastTweet) {
 }
 
 function checkIfShouldTweet(data, difference) {
-    return (data.impf_quote_erst !== (difference[0]/100).toFixed(3) ||
-        data.impf_quote_voll !== (difference[1]/100).toFixed(3))
+    return (Number(data.impf_quote_erst).toFixed(3) !== (difference[0]/100).toFixed(3) ||
+        Number(data.impf_quote_voll).toFixed(3) !== (difference[1]/100).toFixed(3))
 }
 
 async function runAll() {
