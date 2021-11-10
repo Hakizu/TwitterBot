@@ -34,7 +34,9 @@ function createProgressBar(percentage) {
     const empty = chars - filled
     const calculdatedPercentage = (percentage * 100).toFixed(1)
         .toString().replace('.', ',')
-    const progressBar = `${'▓'.repeat(filled)}${'░'.repeat(empty)} ${calculdatedPercentage}%`
+    const progressBar = `${'▓'.repeat(filled)}${'░'.repeat(empty)} ${calculdatedPercentage.length === 4
+        ? calculdatedPercentage :
+        `0${calculdatedPercentage}`}%`
     return progressBar
 }
 
@@ -86,8 +88,10 @@ async function getPreviousVacNumbers(lastTweet) {
 }
 
 function checkIfShouldTweet(data, difference) {
+    const boosterPercentage = calcBoosterPercentage(data.impf_quote_booster)
     return (Number(data.impf_quote_erst).toFixed(3) !== (difference[0]/100).toFixed(3) ||
-        Number(data.impf_quote_voll).toFixed(3) !== (difference[1]/100).toFixed(3))
+        Number(data.impf_quote_voll).toFixed(3) !== (difference[1]/100).toFixed(3) ||
+        Number(boosterPercentage).toFixed(3) !== (difference[2]/100).toFixed(3))
 }
 
 async function runAll() {
