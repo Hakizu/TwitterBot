@@ -23,7 +23,8 @@ async function getUrlData(url) {
     return {
         date: lastLine.date,
         impf_quote_erst: lastLine.impf_quote_erst,
-        impf_quote_voll: lastLine.impf_quote_voll
+        impf_quote_voll: lastLine.impf_quote_voll,
+        impf_quote_booster: lastLine.personen_auffrisch_kumulativ
     }
 }
 
@@ -37,14 +38,23 @@ function createProgressBar(percentage) {
     return progressBar
 }
 
+function calcBoosterPercentage(boosterNumber) {
+    const onePercent = 831546 //1% population
+    return ((boosterNumber/onePercent)/100)
+}
+
 function createMessage(parsedData, difference) {
     const firstBar = createProgressBar(parsedData?.['impf_quote_erst'])
     const secondBar = createProgressBar(parsedData?.['impf_quote_voll'])
 
+    const boosterPercentage = calcBoosterPercentage(parsedData?.["impf_quote_booster"])
+    const thirdBar = createProgressBar(boosterPercentage)
+
     const firstDiff = `+${(parsedData?.impf_quote_erst * 100 - difference[0]).toFixed(1)}%`
     const secondDiff = `+${(parsedData?.impf_quote_voll * 100 - difference[1]).toFixed(1)}%`
+    const thirdDiff = `+${(boosterPercentage * 100 - difference[2]).toFixed(1)}%`
 
-    const message = `${firstBar} at least one dosis ${firstDiff}\n${secondBar} fully vaccinated ${secondDiff}`
+    const message = `${firstBar} at least one dosis ${firstDiff}\n${secondBar} fully vaccinated ${secondDiff}\n${thirdBar} boostered ${thirdDiff}`
     return message
 }
 
