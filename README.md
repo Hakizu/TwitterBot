@@ -1,20 +1,23 @@
-# 2.0 Impfupdate Twitter Bot
-This Twitter bot has been updated to version 2.0.
+# 2.1 Impfupdate Twitter Bot
+Version 2.1 tweets booster vaccine rates and their differential to the previous tweet.
+
+Version 2.0:
 Instead of using a local file to save previous data the bot checks the latest tweet on his timeline and compares it
 to the createdTweet to ensure it's always up to date.
 
-By not depending on a local file it enables the code to be deployed on [Pipedream](https://pipedream.com/).
+By not depending on a local file the script is deployable on [Pipedream](https://pipedream.com/).
 Pipedream is able to run the script remotely, checking several times a day to ensure it always tweets
 the newest Impfdashboard as soon as possible, even on weekends.
 
 
 ## Impfupdate Twitter Bot
 
-This is the code that runs the account [@impfupdate](https://twitter.com/impfupdate) on Twitter, tweeting German vaccination updates with an ASCII-art style loading bar, inspired by [@impf_progess](https://twitter.com/impf_progress).\
-I wanted to replicate [@impf_progress](https://twitter.com/impf_progress) as a personal project which is originally written python, in JavaScript. Logic is partly the same and dependencies are often js counterparts to the python used ones.
+This is the script for the account [@impfupdate](https://twitter.com/impfupdate) on Twitter, tweeting German vaccination updates with an ASCII-art style loading bar, inspired by [@impf_progess](https://twitter.com/impf_progress).\
+I wanted to replicate [@impf_progress](https://twitter.com/impf_progress) as a personal project which is originally written python, in JavaScript. Logic was partly the same in the beginning but has changed as this project developed.
 
->▓▓▓▓▓▓▓▓░░░░░░ 55,10% at least one dosis\
->▓▓▓▓▓░░░░░░░░░ 37,30% fully vaccinated
+>▓▓▓▓▓▓▓▓░░░░░░ 70,0% at least one dosis +0.0%\
+>▓▓▓▓▓░░░░░░░░░ 67,5% fully vaccinated +0.1%\
+>▓░░░░░░░░░░░░░ 03,3% boostered +0.3%
 
 ## Script Setup
 
